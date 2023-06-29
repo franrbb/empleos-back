@@ -20,11 +20,6 @@ import lombok.Data;
 @Data
 public class Vacante implements Serializable{
 	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -45,7 +40,12 @@ public class Vacante implements Serializable{
 	
 	private String estatus;
 	
-	
 	private String detalles;
+	
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 }
