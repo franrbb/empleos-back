@@ -2,8 +2,11 @@ package com.springboot.empleos.app.vacantes;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 
 @SpringBootApplication
+@EntityScan({"com.springboot.empleos.app.vacantes.entity",
+"com.springboot.empleos.app.categorias.entity"})
 public class VacantesApplication {
 
 	public static void main(String[] args) {
