@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.springboot.empleos.app.categorias.service.ICategoriaService;
 
 @RestController
-@RequestMapping("/categorias")
 public class CategoriaController {
 	
 	@Autowired
