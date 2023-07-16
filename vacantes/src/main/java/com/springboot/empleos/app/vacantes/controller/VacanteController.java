@@ -96,5 +96,12 @@ public class VacanteController {
 		return new ResponseEntity<Resource>(recurso, cabecera, HttpStatus.OK);
 		
 	}
-
+	
+	@GetMapping()
+	public ResponseEntity<?> findAll(){
+		
+		//return ResponseEntity.ok().body(vacanteService.buscarPorEstatusAndDestacado(status, destacado));
+		return new ResponseEntity<>(vacanteService.findAll(), HttpStatus.OK);
+		
+	}
 }

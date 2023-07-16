@@ -14,6 +14,12 @@ public class VacanteService implements IVacanteService{
 	
 	@Autowired
 	private IVacanteRespository vacanteRepository;
+	
+	@Override
+	public List<Vacante> findAll() {
+		// TODO Auto-generated method stub
+		return vacanteRepository.findAll();
+	}
 
 	@Override
 	public List<Vacante> buscarPorEstatusAndDestacado(String estatus, int destacado) {

@@ -7,6 +7,8 @@ import com.springboot.empleos.app.vacantes.entity.Vacante;
 
 public interface IVacanteService {
 	
+	List<Vacante> findAll();
+	
 	List<Vacante> buscarPorEstatusAndDestacado(String estatus, int destacado);
 	
 	Optional<Vacante> findById(Long id); 

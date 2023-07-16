@@ -15,7 +15,7 @@ public class CategoriaController {
 	@Autowired
 	private ICategoriaService categoriaService;
 	
-	@GetMapping("/listaCategorias")
+	@GetMapping()
 	public ResponseEntity<?> listarCategorias(){
 		
 		//return ResponseEntity.ok().body(categoriaService.findAll());
