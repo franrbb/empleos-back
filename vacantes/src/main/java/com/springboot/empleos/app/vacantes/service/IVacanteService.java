@@ -11,6 +11,9 @@ public interface IVacanteService {
 	
 	List<Vacante> buscarPorEstatusAndDestacado(String estatus, int destacado);
 	
-	Optional<Vacante> findById(Long id); 
-
+	Optional<Vacante> findById(Long id);
+	
+	Vacante save(Vacante vacante);
+	
+	void delete(Long id);
 }

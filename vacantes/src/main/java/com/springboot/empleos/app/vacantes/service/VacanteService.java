@@ -17,20 +17,28 @@ public class VacanteService implements IVacanteService{
 	
 	@Override
 	public List<Vacante> findAll() {
-		// TODO Auto-generated method stub
 		return vacanteRepository.findAll();
 	}
 
 	@Override
 	public List<Vacante> buscarPorEstatusAndDestacado(String estatus, int destacado) {
-		// TODO Auto-generated method stub
 		return vacanteRepository.findByEstatusAndDestacado(estatus, destacado);
 	}
 
 	@Override
 	public Optional<Vacante> findById(Long id) {
-		// TODO Auto-generated method stub
 		return vacanteRepository.findById(id);
+	}
+
+	@Override
+	public Vacante save(Vacante vacante) {
+		return vacanteRepository.save(vacante);
+	}
+
+	@Override
+	public void delete(Long id) {
+		vacanteRepository.deleteById(id);
+		
 	}
 
 }

@@ -9,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -49,6 +50,11 @@ public class Vacante implements Serializable{
 	@OneToOne
 	@JoinColumn(name = "idCategoria")
 	private Categoria categoria;
+	
+	@PrePersist
+	public void prePersist() {
+		this.fecha = new Date();
+	}
 	
 	
 	/**
