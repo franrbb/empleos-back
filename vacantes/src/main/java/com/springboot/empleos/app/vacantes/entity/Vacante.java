@@ -13,6 +13,8 @@ import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -29,24 +31,31 @@ public class Vacante implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
+	@NotEmpty
 	private String nombre;
 	
+	@NotEmpty
 	private String descripcion;
 	
 	@Temporal(TemporalType.DATE)
 	@DateTimeFormat(pattern = "dd/MM/yyyy")
 	private Date fecha;
 	
+	@NotNull
 	private Double salario;
 	
+	@NotNull
 	private Integer destacado;
 	
 	private String imagen;
 	
+	@NotEmpty
 	private String estatus;
 	
+	@NotEmpty
 	private String detalles;
 	
+	@NotNull
 	@OneToOne
 	@JoinColumn(name = "idCategoria")
 	private Categoria categoria;
