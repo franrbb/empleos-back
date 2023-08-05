@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.springboot.empleos.app.vacantes.entity.Vacante;
@@ -19,6 +21,12 @@ public class VacanteService implements IVacanteService{
 	public List<Vacante> findAll() {
 		return vacanteRepository.findAll();
 	}
+	
+	@Override
+	public Page<Vacante> findAll(Pageable pageable) {
+		return vacanteRepository.findAll(pageable);
+	}
+
 
 	@Override
 	public List<Vacante> buscarPorEstatusAndDestacado(String estatus, int destacado) {
@@ -38,7 +46,6 @@ public class VacanteService implements IVacanteService{
 	@Override
 	public void delete(Long id) {
 		vacanteRepository.deleteById(id);
-		
 	}
 
 }
