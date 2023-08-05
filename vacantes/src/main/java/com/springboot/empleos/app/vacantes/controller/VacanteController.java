@@ -1,12 +1,16 @@
 package com.springboot.empleos.app.vacantes.controller;
 
+import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
@@ -25,7 +29,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.springboot.empleos.app.vacantes.entity.Vacante;
 import com.springboot.empleos.app.vacantes.service.IVacanteService;
@@ -163,6 +169,49 @@ public class VacanteController {
 		return new ResponseEntity<>(newVacante, HttpStatus.CREATED);
 	}
 	
+	@PostMapping("/upload")
+	ResponseEntity<?> upload(@RequestParam("archivo") MultipartFile archivo, @RequestParam("id") Long id) {
+		Optional<Vacante> vacanteOpt = vacanteService.findById(id);
+		
+		Map<String, Object> response = new HashMap<String, Object>();
+		
+		Vacante vacante = null;
+		
+		if(!archivo.isEmpty()) {
+			vacante = vacanteOpt.get();
+			String nombreArchivo = UUID.randomUUID().toString() + "_" + archivo.getOriginalFilename().replace(" ", "");
+			Path rutaArchivo = Paths.get("uploads").resolve(nombreArchivo).toAbsolutePath();
+			
+			try {
+				Files.copy(archivo.getInputStream(), rutaArchivo);
+			} catch (IOException e) {
+				response.put("mensaje", "Error al subir la imagen de la vacante " +nombreArchivo);
+				response.put("error", e.getMessage().concat(": ").concat(e.getCause().getMessage()));
+				return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+			}
+			
+			String fotoAnterior = vacante.getImagen();
+			
+			if(fotoAnterior != null && fotoAnterior.length() > 0) {
+				Path rutaArchivoAnterior = Paths.get("uploads").resolve(fotoAnterior).toAbsolutePath();
+				File archivoFotoAnterior = rutaArchivoAnterior.toFile();
+				if(archivoFotoAnterior.exists() &&archivoFotoAnterior.canRead()) {
+					archivoFotoAnterior.delete();
+				}
+			}
+			
+			vacante.setImagen(nombreArchivo);
+			
+			vacanteService.save(vacante);
+			
+			response.put("mensaje", "Se ha subido correctamente la foto " +nombreArchivo);
+			response.put("vacante", vacante);
+			
+		}
+		
+		return new ResponseEntity<>(vacante, HttpStatus.CREATED);
+	}
+	
 	@PutMapping("/{id}")
 	public ResponseEntity<?> update(@Valid @RequestBody Vacante vacante, BindingResult result, @PathVariable Long id) {
 		Optional<Vacante> vacanteOpt = vacanteService.findById(id);
@@ -219,6 +268,17 @@ public class VacanteController {
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
 		}else {
 			try {
+				Vacante vacante = vacanteOpt.get();
+				String fotoAnterior = vacante.getImagen();
+				
+				if(fotoAnterior != null && fotoAnterior.length() > 0) {
+					Path rutaArchivoAnterior = Paths.get("uploads").resolve(fotoAnterior).toAbsolutePath();
+					File archivoFotoAnterior = rutaArchivoAnterior.toFile();
+					if(archivoFotoAnterior.exists() &&archivoFotoAnterior.canRead()) {
+						archivoFotoAnterior.delete();
+					}
+				}
+				
 				vacanteService.delete(id);
 			}catch (DataAccessException e) {
 				response.put("mensaje", "Error al eliminar la vacante en la base de datos");
