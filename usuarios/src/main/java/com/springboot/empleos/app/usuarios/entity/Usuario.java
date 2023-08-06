@@ -1,6 +1,7 @@
 package com.springboot.empleos.app.usuarios.entity;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -13,7 +14,12 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 import lombok.Data;
 
@@ -28,24 +34,34 @@ public class Usuario implements Serializable{
 
 	@Column(unique = true, length = 20)
 	private String username;
+	
+	private String nombre;
+	
+	@Column(unique = true)
+	private String email;
 
 	@Column(length = 60)
 	private String password;
 
 	private boolean enabled;
 	
-	private String nombre;
-	private String apellido;
+	@Column(name = "fecha_registro")
+	@Temporal(TemporalType.DATE)
+	@DateTimeFormat(pattern = "dd/MM/yyyy")
+	private Date fechaRegistro;
 	
-	@Column(unique = true)
-	private String email;
-
+	
 	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinTable(name = "usuarios_roles", 
 	joinColumns = @JoinColumn(name = "usuario_id"), 
 	inverseJoinColumns = @JoinColumn(name = "role_id"))
 	private List<Role> roles;
 	
+	
+	@PrePersist
+	public void prePersist() {
+		fechaRegistro = new Date();
+	}
 	
 
 	/**
