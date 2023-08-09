@@ -56,13 +56,6 @@ public class VacanteController {
 		
 	}
 	
-	@GetMapping("/page/{page}")
-	public Page<Vacante> index(@PathVariable Integer page){
-		
-		Pageable pageable = PageRequest.of(page, 5);
-		return vacanteService.findAll(pageable);
-	}
-	
 	@GetMapping("/home/verDetalle/{id}")
 	public ResponseEntity<?> verDetalle(@PathVariable Long id){
 		Optional<Vacante> vacanteOpt = vacanteService.findById(id);
@@ -123,6 +116,13 @@ public class VacanteController {
 		
 		return new ResponseEntity<>(vacanteService.findAll(), HttpStatus.OK);
 		
+	}
+	
+	@GetMapping("/page/{page}")
+	public Page<Vacante> index(@PathVariable Integer page){
+		
+		Pageable pageable = PageRequest.of(page, 5);
+		return vacanteService.findAll(pageable);
 	}
 	
 	@GetMapping("/{id}")
