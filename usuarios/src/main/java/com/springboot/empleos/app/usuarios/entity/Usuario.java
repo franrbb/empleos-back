@@ -58,6 +58,8 @@ public class Usuario implements Serializable{
 	uniqueConstraints = {@UniqueConstraint(columnNames = {"usuario_id", "role_id"})})
 	private List<Role> roles;
 	
+	private Integer intentos;
+	
 	
 	@PrePersist
 	public void prePersist() {
