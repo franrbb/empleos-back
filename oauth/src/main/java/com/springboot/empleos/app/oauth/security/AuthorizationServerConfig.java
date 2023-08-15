@@ -1,6 +1,7 @@
 package com.springboot.empleos.app.oauth.security;
 
 import java.util.Arrays;
+import java.util.Base64;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -84,7 +85,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 	@Bean
 	public JwtAccessTokenConverter accessTokenConverter() {
 		JwtAccessTokenConverter tokenConverter = new JwtAccessTokenConverter();
-		tokenConverter.setSigningKey(JWT_KEY);
+		tokenConverter.setSigningKey(Base64.getEncoder().encodeToString(JWT_KEY.getBytes()));
 		return tokenConverter;
 	}
 
