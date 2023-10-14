@@ -33,10 +33,10 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter{
 		.antMatchers(HttpMethod.GET, "/api/vacantes/home/{status}/{destacado}", "/api/vacantes/home/verDetalle/{id}", "/api/vacantes/img/**").permitAll()
 		.antMatchers(HttpMethod.GET, "/api/vacantes", "/api/vacantes/{id}","/api/vacantes/page/**",
 				"/api/categorias", "/api/categorias{id}", 
-				"/api/usuarios/usuarios", "/api/usuarios/usuarios{id}").hasRole("ADMIN")
-		.antMatchers(HttpMethod.POST, "/api/vacantes", "/api/categorias", "/api/usuarios/usuarios").hasRole("ADMIN")
-		.antMatchers(HttpMethod.PUT, "/api/vacantes/{id}", "/api/categorias/{id}", "/api/usuarios/usuarios/{id}").hasRole("ADMIN")
-		.antMatchers(HttpMethod.DELETE, "/api/vacantes/{id}", "/api/categorias{id}", "/api/usuarios/usuarios/{id}").hasRole("ADMIN")
+				"/api/usuarios", "/api/usuarios/{id}, /api/usuarios/**").hasRole("ADMIN")
+		.antMatchers(HttpMethod.POST, "/api/vacantes", "/api/categorias", "/api/usuarios").hasRole("ADMIN")
+		.antMatchers(HttpMethod.PUT, "/api/vacantes/{id}", "/api/categorias/{id}", "/api/usuarios/{id}").hasRole("ADMIN")
+		.antMatchers(HttpMethod.DELETE, "/api/vacantes/{id}", "/api/categorias{id}", "/api/usuarios/{id}").hasRole("ADMIN")
 		.anyRequest().authenticated();
 	}
 	
