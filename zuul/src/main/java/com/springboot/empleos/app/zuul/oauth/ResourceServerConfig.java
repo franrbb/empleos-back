@@ -31,10 +31,11 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter{
 	public void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests().antMatchers("/api/security/oauth/**").permitAll()
 		.antMatchers(HttpMethod.GET, "/api/vacantes/home/{status}/{destacado}", "/api/vacantes/home/verDetalle/{id}", "/api/vacantes/img/**").permitAll()
+		.antMatchers(HttpMethod.POST, "/api/usuarios").permitAll()
 		.antMatchers(HttpMethod.GET, "/api/vacantes", "/api/vacantes/{id}","/api/vacantes/page/**",
 				"/api/categorias", "/api/categorias{id}", 
 				"/api/usuarios", "/api/usuarios/{id}, /api/usuarios/**").hasRole("ADMIN")
-		.antMatchers(HttpMethod.POST, "/api/vacantes", "/api/categorias", "/api/usuarios").hasRole("ADMIN")
+		.antMatchers(HttpMethod.POST, "/api/vacantes", "/api/categorias").hasRole("ADMIN")
 		.antMatchers(HttpMethod.PUT, "/api/vacantes/{id}", "/api/categorias/{id}", "/api/usuarios/{id}").hasRole("ADMIN")
 		.antMatchers(HttpMethod.DELETE, "/api/vacantes/{id}", "/api/categorias{id}", "/api/usuarios/{id}").hasRole("ADMIN")
 		.anyRequest().authenticated();

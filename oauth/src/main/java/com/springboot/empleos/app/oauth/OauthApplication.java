@@ -13,8 +13,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @SpringBootApplication
 public class OauthApplication implements CommandLineRunner{
 	
-	@Autowired
-	private BCryptPasswordEncoder passwordEncoder;
+	/*@Autowired
+	private BCryptPasswordEncoder passwordEncoder;*/
 
 	public static void main(String[] args) {
 		SpringApplication.run(OauthApplication.class, args);
@@ -22,12 +22,12 @@ public class OauthApplication implements CommandLineRunner{
 
 	@Override
 	public void run(String... args) throws Exception {
-		String password = "12345";
+		/*String password = "12345";
 
 		for (int i = 0; i < 4; i++) {
 			String passwordBcrypt = passwordEncoder.encode(password);
 			System.out.println(passwordBcrypt);
-		}
+		}*/
 		
 	}
 
