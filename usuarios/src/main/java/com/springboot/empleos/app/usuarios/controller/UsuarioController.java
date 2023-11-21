@@ -43,7 +43,7 @@ public class UsuarioController {
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<?> findById(@PathVariable Long id){
+	public ResponseEntity<?> findByIdUsuario(@PathVariable Long id){
 		Optional<Usuario> usuarioOpt = usuarioService.findById(id);
 		Map<String, Object> response = new HashMap<String, Object>();
 		
@@ -70,11 +70,11 @@ public class UsuarioController {
 		
 		Usuario newUsuario = null;
 		
-		/*List<Role> roles = new ArrayList<Role>();
+		List<Role> roles = new ArrayList<Role>();
 		Role role = new Role();
 		role.setId(1L);
 		role.setNombre("ROLE_USER");
-		roles.add(role);*/
+		roles.add(role);
 		
 		Map<String, Object> response = new HashMap<String, Object>();
 		
@@ -92,7 +92,7 @@ public class UsuarioController {
 			String passwordBcrypt = passwordEncoder.encode(usuario.getPassword());
 			usuario.setPassword(passwordBcrypt);
 			usuario.setEnabled(true);
-			//usuario.setRoles(roles);
+			usuario.setRoles(roles);
 			newUsuario = usuarioService.save(usuario);
 		} catch (DataAccessException e) {
 			response.put("mensaje", "Error al realizar el insert en la base de datos");
