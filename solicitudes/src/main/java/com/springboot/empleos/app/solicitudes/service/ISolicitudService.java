@@ -14,7 +14,7 @@ public interface ISolicitudService {
 	
 	List<Solicitud> listasolicitudes();
 	
-	//Optional<Solicitud> findById(Long id);
+	Optional<Solicitud> findByIdSolicitud(Long id);
 	
 	Solicitud save(Solicitud solicitud);
 	
@@ -23,5 +23,7 @@ public interface ISolicitudService {
 	Vacante findById(Long id);
 	
 	Usuario findByUsername(String nombre);
-
+	
+	Usuario findByIdUsuario(Long id);
+	
 }

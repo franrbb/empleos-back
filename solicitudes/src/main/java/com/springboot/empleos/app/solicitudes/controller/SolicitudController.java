@@ -2,24 +2,27 @@ package com.springboot.empleos.app.solicitudes.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,6 +30,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 
 import com.springboot.empleos.app.solicitudes.entity.Solicitud;
 import com.springboot.empleos.app.solicitudes.service.ISolicitudService;
@@ -41,6 +45,11 @@ public class SolicitudController {
 	
 	@Autowired
 	private ISolicitudService solicitudService;
+	
+	@GetMapping
+	public ResponseEntity<?> listaSolicitudes(){
+		return new ResponseEntity<>(solicitudService.listasolicitudes(), HttpStatus.OK); 
+	}
 	
 	/*@GetMapping("/{id}")
 	public ResponseEntity<?> findById(@PathVariable Long id){
@@ -79,20 +88,23 @@ public class SolicitudController {
 		return new ResponseEntity<>(vacante, HttpStatus.OK);
 	}
 	
-	@PostMapping("/{idVacante}")
-	public ResponseEntity<?> save(@Valid @RequestBody Solicitud solicitud, BindingResult result, @PathVariable Long idVacante){
+	@GetMapping("/usuario/{id}")
+	public ResponseEntity<?> findUsuarioById(@PathVariable Long id){
+		Usuario usuario = solicitudService.findByIdUsuario(id);
 		
-		/*Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
-		auth.getName();
+		Map<String, Object> response = new HashMap<String, Object>();
 		
-		Usuario user = (Usuario)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-		if(user.getId() != null){
-		     //podemos borrar
+		if(usuario == null) {
+			response.put("mensaje", "El usuario con ID: ".concat(id.toString().concat(" no existe en la base de datos.")));
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
 		}
 		
-		String username = authentication.getName();*/
+		return new ResponseEntity<>(usuario, HttpStatus.OK);
+		
+	}
+	
+	@PostMapping("/{idVacante}")
+	public ResponseEntity<?> save(@Valid @RequestBody Solicitud solicitud, BindingResult result, @PathVariable Long idVacante){
 		
 		Solicitud newSolicitud = null;
 		
@@ -112,9 +124,9 @@ public class SolicitudController {
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.BAD_REQUEST);
 		}
 		
-		ResponseEntity<Vacante> vacante = (ResponseEntity<Vacante>) findVacanteById(idVacante);
+		/*ResponseEntity<Vacante> vacante = (ResponseEntity<Vacante>) findVacanteById(idVacante);
 		vacanteId = vacante.getBody().getId();
-		vacanteSave.setId(vacanteId);
+		vacanteSave.setId(vacanteId);*/
 		
 		try {
 			solicitud.setVacante(vacanteSave);
@@ -196,5 +208,37 @@ public class SolicitudController {
 		
 		return new ResponseEntity<>(newSolicitud, HttpStatus.CREATED);
 	}
+	
+	@DeleteMapping("/{id}")
+	public ResponseEntity<?> delete(@PathVariable Long id) {
+		Optional<Solicitud> solicitudOpt = solicitudService.findByIdSolicitud(id);
+		Map<String, Object> response = new HashMap<String, Object>();
+		
+		if(!solicitudOpt.isPresent()) {
+			response.put("mensaje", "La solicitud con ID: ".concat(id.toString().concat(" no existe en la base de datos")));
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
+		}else {
+			try {
+				solicitudService.deleteById(id);
+			}catch (DataAccessException e) {
+				response.put("mensaje", "Error al eliminar la solicitud en la base de datos");
+				response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+				return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+			}
+		}
+		
+		response.put("mensaje", "La solicitud ha sido eliminada con éxito");
+		return new ResponseEntity<>(response, HttpStatus.OK);
+	}
+	
+	
+	/*@GetMapping("/prueba")
+	public ResponseEntity algunHandler(HttpServletRequest request, @RequestHeader (name="Authorization", required = false) String token) {
+		String authTokenHeader = request.getHeader("Authorization");
+		log.info("-----------------------------------------------------" +authTokenHeader);
+		log.info(token);
+		
+		return null;
+	}*/
 	
 }

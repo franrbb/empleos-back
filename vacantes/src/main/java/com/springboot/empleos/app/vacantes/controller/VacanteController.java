@@ -300,5 +300,12 @@ public class VacanteController {
 		response.put("mensaje", "La vacante ha sido eliminada con éxito");
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
+	
+	@GetMapping("/filtrar/{term}")
+	public ResponseEntity<?> buscar(@PathVariable String term){
+		List<Vacante> vacante = vacanteService.findByNombre(term);
+		log.info(vacante.toString());
+		return new ResponseEntity<>(vacante, HttpStatus.OK);
+	}
 		
 }

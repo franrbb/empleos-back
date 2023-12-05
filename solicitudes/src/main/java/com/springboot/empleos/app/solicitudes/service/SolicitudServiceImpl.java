@@ -30,10 +30,10 @@ public class SolicitudServiceImpl implements ISolicitudService{
 		return solicitudRepository.findAll();
 	}
 
-	/*@Override
-	public Optional<Solicitud> findById(Long id) {
+	@Override
+	public Optional<Solicitud> findByIdSolicitud(Long id) {
 		return solicitudRepository.findById(id);
-	}*/
+	}
 
 	@Override
 	public Solicitud save(Solicitud solicitud) {
@@ -53,6 +53,11 @@ public class SolicitudServiceImpl implements ISolicitudService{
 	@Override
 	public Usuario findByUsername(String nombre) {
 		return clientUsuario.findByUsername(nombre);
+	}
+
+	@Override
+	public Usuario findByIdUsuario(Long id) {
+		return clientUsuario.findByIdUsuario(id);
 	}
 
 }

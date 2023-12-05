@@ -48,4 +48,9 @@ public class VacanteService implements IVacanteService{
 		vacanteRepository.deleteById(id);
 	}
 
+	@Override
+	public List<Vacante> findByNombre(String term) {
+		return vacanteRepository.findByNombre(term);
+	}
+
 }

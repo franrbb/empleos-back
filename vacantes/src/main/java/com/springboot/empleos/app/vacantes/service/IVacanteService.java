@@ -21,4 +21,6 @@ public interface IVacanteService {
 	Vacante save(Vacante vacante);
 	
 	void delete(Long id);
+	
+	public List<Vacante> findByNombre(String term);
 }

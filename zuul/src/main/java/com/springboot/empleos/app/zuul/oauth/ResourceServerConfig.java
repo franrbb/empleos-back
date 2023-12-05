@@ -30,12 +30,13 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter{
 	@Override
 	public void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests().antMatchers("/api/security/oauth/**").permitAll()
-		.antMatchers(HttpMethod.GET, "/api/vacantes/home/{status}/{destacado}", "/api/vacantes/home/verDetalle/{id}", "/api/vacantes/img/**").permitAll()
+		.antMatchers(HttpMethod.GET, "/api/vacantes/home/{status}/{destacado}", "/api/vacantes/home/verDetalle/{id}", "/api/vacantes/img/**", "/api/vacantes/filtrar/{term}").permitAll()
 		.antMatchers(HttpMethod.POST, "/api/usuarios").permitAll()
 		.antMatchers(HttpMethod.GET, "/api/vacantes", "/api/vacantes/{id}","/api/vacantes/page/**",
 				"/api/categorias", "/api/categorias{id}", 
-				"/api/usuarios", "/api/usuarios/{id}, /api/usuarios/**").hasRole("ADMIN")
-		.antMatchers(HttpMethod.POST, "/api/solicitudes/{id}").hasAnyRole("ADMIN", "USER")
+				"/api/usuarios", "/api/usuarios/{id}, /api/usuarios/**", "/api/solicitudes").hasRole("ADMIN")
+		.antMatchers(HttpMethod.GET, "/api/solicitudes/**").hasAnyRole("ADMIN", "USER")
+		.antMatchers(HttpMethod.POST, "/api/solicitudes/**").hasAnyRole("ADMIN", "USER")
 		.antMatchers(HttpMethod.POST, "/api/vacantes", "/api/categorias").hasRole("ADMIN")
 		.antMatchers(HttpMethod.POST, "/api/solicitudes").hasAnyRole("ADMIN", "USER")
 		.antMatchers(HttpMethod.PUT, "/api/vacantes/{id}", "/api/categorias/{id}", "/api/usuarios/{id}").hasRole("ADMIN")
